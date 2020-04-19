@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Targeted Topics - Async JS</title>
+  <meta charset="utf8" />
+  <link href="/vendor/semantic-ui/semantic.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="ui container">
+  <h1>Exercise 2</h1>
+
+  <p>Convert this then() chain to just use async/await instead.</p>
+
+  <p>Tips:</p>
+
+  <ul>
+    <li>You are not authoring promises, just using them</li>
+    <li>You'll need to wrap things in an async function</li>
+    <li>Don't try to convert addEventListener to a promise-maker...</li>
+  </ul>
+
+  <p><strong>Bonus:</strong> handle errors/exceptions</p>
+
+  <div id="primary-button" class="ui primary button">
+    Click me...
+  </div>
+
+  <script>
+    // no need to edit anything in this script block...
+
+    function delay(ms) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, ms);
+      });
+    }
+    const button = document.getElementById("primary-button");
+  </script>
+
+  <script>
+    // Make your changes here...
+
+    button.addEventListener("click", (e) => {
+      const prom = fetch("/api/users.json")
+        .then((response) => {
+          if (response.ok) {
+            console.log("Got the response");
+            return response.json();
+          }
+        })
+        .then((data) => {
+          console.log("Got the data!", data);
+          console.log("Waiting...");
+          return delay(500);
+        })
+        .then(() => {
+          console.log("Done waiting, removing button");
+          button.remove();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // after everyting is done
+      prom.then(() => {
+        console.log("All done");
+      });
+    });
+  </script>
+</body>
+
+</html>
