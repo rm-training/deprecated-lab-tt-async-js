@@ -46,10 +46,16 @@
 
     // Part 1: write your 'listenTo' function here
     function listenTo(element, event) {
-      // implement me...
+      // @todo - make a promise that resolves when a user clicks the element
+      // @todo - the promise should resolve to the event object...
+
+      // @todo return a promise
     }
 
     // Part 2: write your 'delay' function here
+    // @todo - write the function that accepts one arg, "ms"
+    // @todo - it should return a promise
+    // @todo - the promise is resolved when a timeout is reached
 
     const button = document.getElementById('primary-button');
 
@@ -58,6 +64,8 @@
       .then((e) => {
         console.log('This element was clicked:', e.target);
       });
+    // @todo - add another .then() for your delay() 
+    // @todo - and another .then() for your button removal
 
   </script>
 
