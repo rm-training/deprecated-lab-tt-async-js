@@ -21,9 +21,11 @@
     <li>Don't worry about rejection</li>
   </ul>
 
-  <h6>Take note: this handles the event <em>once</em>... think about why that is.</h6>
+  <p>Make sure the button logs when it is clicked with your new `listenTo` function in place.</p>
 
-  <h3>Part 2</h3>
+  <h3>Take note: this handles the event <em>once</em>... think about why that is.</h3>
+
+  <h3>Part 2 (bonus)</h3>
   <p>Implement a "delay" function that:</p>
 
   <ul>
@@ -32,11 +34,9 @@
   </ul>
 
   <p>
-    Finally, use your "delay" function so that you remove the
-    button from the page 5 seconds after the user clicks it.
-    Try to do this by adding another callback to the chain.
+    Extend the .then() chain and use your "delay" function so the
+    button element is removed from the page 5 seconds after the user clicks it.
   </p>
-
 
   <div id="primary-button" class="ui primary button">
     Click me...
@@ -44,10 +44,14 @@
 
   <script>
 
-    // write your solution here...
-    function listenTo(el, event) {
+    // Part 1: write your 'listenTo' function here
+    function listenTo(element, event) {
+      // @todo - make a promise that resolves when a user clicks the element
+      // @todo - the promise should resolve to the event object...
+
+      // @todo return a promise
       return new Promise((resolve, reject) => {
-        el.addEventListener(event, e => {
+        element.addEventListener(event, (e) => {
           resolve(e);
         });
       });
@@ -55,35 +59,40 @@
 
     function delay(ms) {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve();
-        }, ms);
+        setTimeout(resolve, ms);
       });
     }
 
+    // Part 2: write your 'delay' function here
+    // @todo - write the function that accepts one arg, "ms"
+    // @todo - it should return a promise
+    // @todo - the promise is resolved when a timeout is reached
+
     const button = document.getElementById('primary-button');
 
-    const prom = listenTo(button, 'click').then((e) => {
+    // Part 2: You'll likely extend this .then() chain
+    listenTo(button, 'click')
+      .then((e) => {
         console.log('This element was clicked:', e.target);
-      });
+      })
+      .then(e => {
+        // interesting...
+        // this handler is immediately applied and triggered
+        // bubbling at work!
+        // I need to build in some delay to avoid a "double click"
+        // ala: button click -> promise resolves -> handler added -> bubbles up -> body click
+        return listenTo(document.body, 'click');
+      })
+      .then(() => {
+        console.log('Body was clicked');
+      })
+      .then(() => delay(500))
+      .then(() => {
+        button.remove();
+      })
+    // @todo - add another .then() for your delay()
+    // @todo - and another .then() for your button removal
 
-    prom.then(e => {
-          // interesting...
-          // this handler is immediately applied and triggered
-          // bubbling at work!
-          // I need to build in some delay to avoid a "double click"
-          // ala: button click -> promise resolves -> handler added -> bubbles up -> body click
-          return listenTo(document.body, 'click');
-        })
-        .then(() => {
-          console.log('Body was clicked');
-        })
-        .then(() => {
-          return delay(5000);
-        })
-        .then(() => {
-          button.remove();
-        });
   </script>
 
 </body>

@@ -28,7 +28,6 @@
 
   <script>
     // no need to edit anything in this script block...
-
     function delay(ms) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -40,9 +39,10 @@
   </script>
 
   <script>
-    // Make your changes here...
+    // @todo - create an async function here; you'll use this in your handler below
 
     button.addEventListener("click", (e) => {
+      // @todo - move this chain of thens/catches to a new function - that way you can make it "async"!
       const prom = fetch("/api/users.json")
         .then((response) => {
           if (response.ok) {
@@ -63,7 +63,8 @@
           console.error(err);
         });
 
-      // after everyting is done
+      // @todo - this callback should be invoked after your entire async function's promise resolves...
+      // @todo - so... that means something like myAsyncFn().then(...);
       prom.then(() => {
         console.log("All done");
       });
