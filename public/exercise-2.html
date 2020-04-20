@@ -45,6 +45,7 @@
       // @todo - move this chain of thens/catches to a new function - that way you can make it "async"!
       const prom = fetch("/api/users.json")
         .then((response) => {
+          // @todo - you may want to invert this and throw an error when !response.ok
           if (response.ok) {
             console.log("Got the response");
             return response.json();
