@@ -44,6 +44,11 @@
 
   <script>
 
+    // broke this out for visibility (while teaching)
+    const eventConfig = {
+      once: true,
+    };
+
     // Part 1: write your 'listenTo' function here
     function listenTo(element, event) {
       // @todo - make a promise that resolves when a user clicks the element
@@ -53,7 +58,7 @@
       return new Promise((resolve, reject) => {
         element.addEventListener(event, (e) => {
           resolve(e);
-        });
+        }, eventConfig); // this is me being nice...
       });
     }
 
