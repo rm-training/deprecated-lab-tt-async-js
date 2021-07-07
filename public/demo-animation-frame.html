@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Targeted Topics - Async JS</title>
+    <meta charset="utf8" />
+    <link href="/vendor/semantic-ui/semantic.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+      #object {
+        font-size: 4rem;
+        line-height: 4rem;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 10px;
+        height: 10px;
+      }
+
+      #other {
+        font-size: 4rem;
+        line-height: 4rem;
+        position: absolute;
+        top: 150px;
+        left: 0;
+        width: 10px;
+        height: 10px;
+      }
+
+      #css-only {
+        font-size: 4rem;
+        line-height: 4rem;
+        position: absolute;
+        top: 250px;
+        left: 0;
+        width: 10px;
+        height: 10px;
+
+        animation-duration: 2.5s;
+        animation-name: slidein;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        /*animation-direction: alternate;*/
+      }
+
+      @keyframes slidein {
+        from {
+          left: 0;
+        }
+
+        to {
+          left: 800px;
+        }
+      }
+    </style>
+    
+</head>
+
+<body class="ui container">
+    <h1>Demo / Playground</h1>
+
+    <div id="object">
+      ⛵
+    </div>
+
+    <div id="other">
+      🚌
+    </div>
+
+    <div id="css-only">
+      🐈
+    </div>
+
+    <script type="module">
+      const elem = document.getElementById('object');
+
+      let left = 0;
+      let endPosition = 800;
+      let increment = 5;
+        
+      let timer = setInterval(function() {
+        if (left > endPosition) {
+          left = 0;
+        } else {
+          left += increment;
+        }
+        elem.style.left = `${left}px`;
+
+      }, 16); 
+      // Gotcha
+      // An interval of "16ms" is an attempt at redrawing every frame for a 60hz monitor
+      // but this is going to be innacurate for different browsers and monitors
+    </script>
+
+    <script type="module">
+      const elem = document.getElementById('other');
+
+      let left = 0;
+      let endPosition = 800;
+      let increment = 5;
+        
+      // Move the element on the right at ~600px/s
+      const step = function(timestamp) {
+        if (left > endPosition) {
+          left = 0;
+        } else {
+          left += increment;
+        }
+
+        elem.style.left = `${left}px`;
+
+        //elem.style.transform = 'translateX(' + increment + 'px)';
+
+        window.requestAnimationFrame(step);
+      }
+
+      window.requestAnimationFrame(step);
+    </script>
+</body>
+
+</html>
