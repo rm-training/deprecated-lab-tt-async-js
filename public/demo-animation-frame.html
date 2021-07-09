@@ -59,6 +59,10 @@
 <body class="ui container">
     <h1>Demo / Playground</h1>
 
+    <div class="ui right floated">
+      MS Per Animation Frame: <span class="ui label frame-duration"></span>
+    </div>
+
     <div id="object">
       ⛵
     </div>
@@ -70,6 +74,45 @@
     <div id="css-only">
       🐈
     </div>
+
+    <script type="module">
+      const rateEl = document.querySelector('.frame-duration');
+      let rateInMs = 0;
+      let lastTs = 0;
+
+      const fn = (ts) => {
+        const rateInMs = ts - lastTs;
+        lastTs = ts;
+        rateEl.innerHTML = rateInMs.toPrecision(6);
+
+        window.requestAnimationFrame(fn);
+      };
+      window.requestAnimationFrame(fn);
+
+
+
+      console.log('Main Thread: 1');
+      setTimeout(() => console.log('Timeout 1'), 0);
+      setTimeout(() => console.log('Timeout 2'), 0);
+      setTimeout(() => console.log('Timeout 3'), 0);
+      window.requestAnimationFrame(() => console.log('RAF 1'));
+      window.requestAnimationFrame(() => console.log('RAF 2'));
+      window.requestAnimationFrame(() => console.log('RAF 3'));
+      Promise.resolve().then(() => console.log('Promise 1'));
+      Promise.resolve().then(() => console.log('Promise 2'));
+      Promise.resolve().then(() => console.log('Promise 3'));
+
+      console.log('Main Thread: 1');
+      setTimeout(() => console.log('Timeout 1'), 0);
+      setTimeout(() => console.log('Timeout 2'), 0);
+      setTimeout(() => console.log('Timeout 3'), 0);
+      window.requestAnimationFrame(() => console.log('RAF 1'));
+      window.requestAnimationFrame(() => console.log('RAF 2'));
+      window.requestAnimationFrame(() => console.log('RAF 3'));
+      Promise.resolve().then(() => console.log('Promise 1'));
+      Promise.resolve().then(() => console.log('Promise 2'));
+      Promise.resolve().then(() => console.log('Promise 3'));
+    </script>
 
     <script type="module">
       const elem = document.getElementById('object');
